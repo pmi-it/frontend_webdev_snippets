@@ -1,0 +1,40 @@
+<!--
+    This snippet is a demo for darkmode detection.
+
+    Version 1 (20.03.2022)
+-->
+
+<html lang="en">
+    <head>  
+        <title>css_darkmode_detection</title>
+        <style>
+            /* Light mode */
+            @media (prefers-color-scheme: light) {
+                :root {
+                    background-color: #d5d5d5;
+                    color: #171b20;
+                }
+                /* hide dark mode notice */
+                .notice-dark {
+                    display: none;
+                }
+            }
+
+            /* Dark mode */
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    background-color: #171b20;
+                    color: #d5d5d5;
+                }
+                /* hide light mode notice */
+                .notice-light {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <p class="notice-light">Browser detected that you are currently not using dark-mode.</p>
+        <p class="notice-dark">Browser detected that you are using dark-mode.</p>
+    </body>
+</html>
