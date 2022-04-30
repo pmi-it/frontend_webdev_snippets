@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js_gamemap.html</title>
+    <style>
+        body {
+            background: black;
+        }
+
+        .noselect {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+        }
+
+        #controls-zoom {
+            position: fixed;
+            top: 0;
+            left: 20%;
+            width: 80px;
+            background: #171b20;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border: 2px solid orange;
+            border-top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #controls-zoom span {
+            font-size: 25px;
+            margin: 5px 10px;
+            line-height: 100%;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .game-container {
+            padding: 5px;
+            overflow: scroll;
+        }
+
+        #game-map {
+            display: grid;
+            width: 1200px;
+            background-image: url("js_gamemap_map1.jpg");
+            background-size: contain;
+            margin: auto;
+        }
+        #game-map div {
+            aspect-ratio: 1;
+            position: relative;
+        }
+        #game-map div div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+        }
+
+
+        .helper-cell-blink {
+            background-color: black;
+            border-radius: 50%;
+            animation: 1s infinite alternate ease-out breathing-color--dark;
+        }
+        @keyframes breathing-color--dark {
+            from {
+                background-color: #ff750073;
+            } to {
+                background-color: rgba(183, 98, 25, 0.47);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="controls-zoom" class="noselect"><span id="zoomIn">+</span><span id="zoomOut">-</span></div>
+    <div class="game-container">
+        <div id="game-map"></div>
+    </div>
+
+    <script>
+        document.body.onload = init();
+
+        function init () {
+            createGameMap();
+            controlsListener();
+            cellquery();
+        }
+
+        function createGameMap () {
+            // Settings
+            const gameMapHeight = 18;
+            const gameMapWidth = 22;
+            const gameMapCells = gameMapHeight * gameMapWidth;
+
+            // create the gameMap with grid
+            var gameMapDiv = document.getElementById("game-map");
+
+            var yCoordinate = gameMapHeight;
+            var xCoordinate = 1;
+
+            for (var i = 0; i < gameMapCells; i++) {
+                let coordinate = `x${xCoordinate}y${yCoordinate}`;
+                var gameMapTile = document.createElement("div");
+                gameMapTile.className = "game-map-cell";
+                gameMapTile.id = coordinate;
+
+                let subdivs = ["level1","level2","level3","ctrl"];
+                subdivs.forEach(createSubdivs);
+                function createSubdivs(item) {
+                    let a = document.createElement("div");
+                    if(item === "ctrl") {
+                        a.className = `${item}`;
+                        a.dataset.xy = coordinate;
+                    } else {
+                        a.className = `${item} ${coordinate}`;
+                    }
+                    gameMapTile.appendChild(a);
+                }
+
+
+                gameMapDiv.appendChild(gameMapTile);
+
+                xCoordinate++;
+
+                if(xCoordinate > gameMapWidth) {
+                    yCoordinate--;
+                    xCoordinate=1;
+                }
+            }
+
+            // set grid-template-columns to map
+            gameMapDiv.style.gridTemplateColumns = `repeat(${gameMapWidth}, 1fr)`;
+        }
+
+
+        /*
+         * Event Listener and function for zoomIn & zoomOut of Game Map
+         */
+        function controlsListener() {
+            document.getElementById('zoomIn').addEventListener('click',zoomMap,false);
+            document.getElementById('zoomOut').addEventListener('click',zoomMap,false);
+        }
+
+        function zoomMap() {
+            var gameMap = document.getElementById("game-map");
+            var currWidth = gameMap.clientWidth;
+            if(this.getAttribute('id') === "zoomIn") {
+                var newWidth = currWidth * 1.05;
+            } else {
+                var newWidth = currWidth / 1.05;
+            }
+
+            gameMap.style.width = `${newWidth}px`;
+        }
+
+
+
+
+        /*
+         * testing function to set eventlistener to ctrl div
+         */
+
+        function cellquery() {
+            var a = document.getElementById("game-map").childNodes
+
+            for (var i = 0; i < a.length; i++) {
+                let b = a[i].getElementsByClassName('ctrl');
+                b[0].addEventListener('click',cellqueryTest,false);
+            }
+        }
+
+        function cellqueryTest() {
+            console.log(this.dataset.xy);
+            var a = document.getElementById(this.dataset.xy);
+            let b = a.getElementsByClassName('level1');
+            b[0].style.backgroundImage = "url('js_gamemap_ct_pistol.png')";
+
+            // remove all listeners
+            var rema = document.getElementById("game-map").childNodes
+            for (var i = 0; i < rema.length; i++) {
+                let b = rema[i].getElementsByClassName('ctrl');
+                b[0].removeEventListener('click',cellqueryTest,false);
+            }
+            // create listener for direction
+            // get click position
+            var base = this.dataset.xy.replace('x','').split(/[y]/);
+
+            var arry = [[parseInt(base[0]), parseInt(base[1]) + 1], // north
+                        [parseInt(base[0]) + 1, parseInt(base[1]) + 1], // northeast
+                        [parseInt(base[0]) + 1, parseInt(base[1])], // east
+                        [parseInt(base[0]) + 1, parseInt(base[1]) - 1], // southeast
+                        [parseInt(base[0]), parseInt(base[1]) - 1], // south
+                        [parseInt(base[0]) - 1, parseInt(base[1]) - 1], // southwest
+                        [parseInt(base[0]) - 1, parseInt(base[1])], // west
+                        [parseInt(base[0]) - 1, parseInt(base[1]) + 1]] // northwest
+
+            for (var i = 0; i < arry.length; i++) {
+                var nDirPos = `x${arry[i][0]}y${arry[i][1]}`
+                var valid = document.getElementById(nDirPos);
+                if(valid) {
+                    var nDirCell = valid.getElementsByClassName('ctrl');
+                    nDirCell[0].addEventListener('mouseover',showArrow,false);
+                    var nDirHelperCell = valid.getElementsByClassName('ctrl');
+                    nDirHelperCell[0].classList.add("helper-cell-blink");
+                }
+            }
+
+            console.log(arry)
+
+        }
+
+        function showArrow(event) {
+            console.log(this)
+            event.target.style.backgroundColor = "#ff750073";
+            // reset the color after a short delay
+            setTimeout(function() {
+                event.target.style.backgroundColor = "";
+            }, 500);
+
+        }
+
+
+
+    </script>
+</body>
+</html>
