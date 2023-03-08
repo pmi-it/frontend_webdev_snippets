@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>video sequences testing</title>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body class="video-sequences">
+
+        <h1>this could be a interactive video or multiple choice quiz frame</h1>
+        <div class="video-container">
+            <video width="100%">
+                <source src="../assets/videos/vid_start.mp4"  type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="controller v-initstate">
+                <div class="btn-play">
+                    PLAY
+                </div>
+                <div class="btn-pause">
+                    PAUSE
+                </div>
+                <div id="questions">
+                    
+                </div>
+                <div id="controlset">
+                    <!-- this is where the logic is defined. maybe it would be funny to add this to correct answers: https://codepen.io/ItsConnor/pen/epBGzM -->
+                    <div data-cset="1">
+                        <div class="answer" data-nextVideo="../assets/videos/vid_a.mp4" data-nextContrSet="2">Answer A</div>
+                        <div class="answer" data-nextVideo="../assets/videos/vid_b.mp4" data-nextContrSet="3">Answer B</div>
+                    </div>
+                    <div data-cset="2">
+                        <div class="answer" data-nextVideo="../assets/videos/vid_a.mp4">2 Take me to Website</div>
+                        <div class="answer" data-nextVideo="../assets/videos/vid_start.mp4">2 Repeat</div>
+                    </div>
+                    <div data-cset="3">
+                        <div class="answer" data-nextVideo="../assets/videos/vid_a.mp4">3 Answer A</div>
+                        <div class="answer" data-nextVideo="../assets/videos/vid_b.mp4">3 Answer B</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <script>
+
+        $(document).ready(function(){
+       
+            const video = $('video');
+            const contr = $('.controller');
+            const contrBtnPlay = $('.controller .btn-play');
+            const contrBtnPause = $('.controller .btn-pause');
+            const contrQuestions = $('.controller #questions');
+
+            const contrSet = $('#controlset');
+            let t = contrSet.find('[data-cset="1"]').children();
+            console.log(t.children());
+            $('#questions').append(t);
+
+            contrBtnPlay.show();
+            
+            // standard video playback behaviour
+            contr.on('click',function(){
+                if($(this).hasClass('v-initstate')) {
+                    $(this).removeClass('v-initstate');
+                    contrBtnPlay.hide();
+                    video.get(0).play();
+                    $(this).addClass('v-playing');
+                } else if($(this).hasClass('v-playing')) {
+                    $(this).removeClass('v-playing');
+                    video.get(0).pause();
+                    contrBtnPause.show();
+                    $(this).addClass('v-paused');
+                } else if ($(this).hasClass('v-paused')) {
+                    $(this).removeClass('v-paused');
+                    contrBtnPause.hide();
+                    video.get(0).play();
+                    $(this).addClass('v-playing');
+                }
+            });
+
+            video.on('ended',function(){
+                contr.removeClass('v-playing');
+                contrQuestions.show();
+                console.log('video ended');
+                // change src and autoplay the next video
+                // video.get(0).src = '../assets/videos/vid_a.mp4';
+                // video.get(0).play();
+            });
+
+        });
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+body.video-sequences .video-container {
+  position: relative;
+}
+body.video-sequences .video-container video {
+  position: relative;
+}
+body.video-sequences .video-container .controller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body.video-sequences .video-container .controller .btn-play {
+  display: none;
+  padding: 5px 10px;
+  background-color: aquamarine;
+  cursor: pointer;
+}
+body.video-sequences .video-container .controller .btn-pause {
+  display: none;
+  padding: 5px 10px;
+  background-color: aquamarine;
+  cursor: pointer;
+}
+body.video-sequences .video-container .controller #questions {
+  display: none;
+}
+body.video-sequences .video-container .controller #questions .answer {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: aquamarine;
+  cursor: pointer;
+}
+body.video-sequences .video-container .controller #controlset {
+  display: none;
+}
