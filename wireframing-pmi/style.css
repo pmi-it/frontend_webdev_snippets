@@ -157,6 +157,9 @@ p.bold {
   gap: 1em;
   flex-wrap: wrap;
 }
+.wf-flex .wf-btn {
+  margin-top: unset;
+}
 .wf-space {
   padding-bottom: 1em;
 }
