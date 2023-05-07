@@ -11,30 +11,86 @@
 
     <div id="content" class="wf-mc wf-grid-1col">
 
-        <nav aria-label="breadcrumb">
-            <ol id="breadcrumb" class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Library</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Data</li>
-            </ol>
-        </nav>
+        <div class="wf-c wf-flex">
+            <a class="wf-btn" onclick="wf_ct('home')">Home</a>
+            <a class="wf-btn" onclick="wf_ct('showroom')">Showroom</a>
+        </div>
 
         <div id="wf-content-inner" class="wf-grid-1col"></div>
 
         <script>
             $(document).ready(function()
             {
-                $.get("pages/home.html", function(html_string) {
+                var wfss_arr = wf_get_session();
+
+                $.get('pages/' + wfss_arr['page'] + '.html', function(html_string) {
+                    // append the start page content
                     $('#wf-content-inner').append(html_string);
+                    // create click events
+                    wf_create_click_events()
                 },'html');
             });
 
+            /*
+             * wf_ct (wireframe_changetemplate)
+             */
             function wf_ct(page) {
-                $('#wf-content-inner').children().remove();
+
                 $.get("pages/"+page+".html", function(html_string) {
+
+                    // remove previous page content
+                    $('#wf-content-inner').children().remove();
+
+                    // append the new page content
                     $('#wf-content-inner').append(html_string);
+
+                    // scroll to top
+                    $(window).scrollTop(0);
+
+                    // create click events
+                    wf_create_click_events();
+
+                    // load session storage
+                    let wfss_arr = wf_get_session();
+                    wfss_arr['page'] = page;
+                    wf_write_session(wfss_arr);
+
                 },'html');    // this is the change now its working
+
             }
+
+            /*
+             * createClickEvents
+             */
+            function wf_create_click_events() {
+                $('.wf-note-toggle').click(function() {
+                   $(this).parent().addClass('active');
+                });
+                $('.wf-note-close').click(function() {
+                    $(this).parent().parent().removeClass('active');
+                });
+            }
+
+            /*
+             * initiate SessionStorage
+             */
+            function wf_get_session() {
+                var wfss_arr = JSON.parse(sessionStorage.getItem("WFSessionStorage"));
+                if(wfss_arr === null) {
+                    var wfss_arr = {'page': 'home'};
+                    sessionStorage.setItem("WFSessionStorage", JSON.stringify(wfss_arr));
+                }
+                return wfss_arr;
+            }
+
+            /*
+            * write SessionStorage
+            */
+            function wf_write_session(wfss_arr) {
+                sessionStorage.setItem("WFSessionStorage", JSON.stringify(wfss_arr));
+            }
+
+
         </script>
 
     </div> <!-- container -->
