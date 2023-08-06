@@ -1,0 +1,292 @@
+/* Breakpoints */
+/* Scheme */
+/* Fonts */
+/* syne-regular - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/gfont-syne/syne-v16-latin-regular.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* syne-500 - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/assets/fonts/gfont-syne/syne-v16-latin-500.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* syne-600 - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/assets/fonts/gfont-syne/syne-v16-latin-600.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* syne-700 - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/fonts/gfont-syne/syne-v16-latin-700.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* syne-800 - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 800;
+  src: url('/assets/fonts/gfont-syne/syne-v16-latin-800.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+html {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  padding: 80px 0 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-size: 100%;
+  font-family: 'Syne';
+  font-weight: 400;
+  transition: font-size 0.5s ease-in-out;
+  background-color: var(--cl0);
+  color: var(--cl7);
+  --cl0: #E5E5E5;
+  --cl1: #CCCCCC;
+  --cl2: #B2B2B2;
+  --cl3: #999999;
+  --cl4: #808080;
+  --cl5: #666666;
+  --cl6: #4D4D4D;
+  --cl7: #333333;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    --cl0: #333333;
+    --cl1: #4D4D4D;
+    --cl2: #666666;
+    --cl3: #808080;
+    --cl4: #999999;
+    --cl5: #B2B2B2;
+    --cl6: #CCCCCC;
+    --cl7: #E5E5E5;
+  }
+}
+body.no-scroll {
+  overflow: hidden;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: var(--cl0);
+}
+header .breadcrumb {
+  margin: 10px 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  position: absolute;
+  top: -100px;
+}
+h1 {
+  margin: 0.2em 0 0.2em;
+  line-height: 90%;
+  font-size: 2em;
+  font-weight: 400;
+  position: relative;
+  z-index: 10;
+}
+h1 span {
+  display: block;
+  font-weight: 600;
+}
+h2 {
+  margin: 0;
+  padding-top: 0.5em;
+  display: block;
+  font-size: 1.75em;
+  background-color: var(--cl1);
+}
+h3 {
+  margin: 0;
+  padding-top: 0.5em;
+  padding-left: 2em;
+  font-size: 1.5em;
+  background-color: var(--cl2);
+}
+h4 {
+  margin: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.1em;
+  line-height: 100%;
+  font-size: 1.25em;
+  background-color: var(--cl3);
+}
+.h4c {
+  background-color: var(--cl4);
+  color: var(--cl0);
+}
+/* inner constraint */
+.s1x-c {
+  box-sizing: border-box;
+  max-width: 900px;
+  width: 100%;
+  margin: 5px auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+header .headflex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+header .main-navigation {
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: var(--cl0);
+  visibility: hidden;
+  transition: opacity 400ms, visibility 500ms;
+}
+header .main-navigation.active {
+  opacity: 1;
+  visibility: visible;
+}
+header .main-navigation .menu-header-menu-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+header .main-navigation .menu-header-menu-container ul.menu {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+header .main-navigation .menu-header-menu-container ul.menu li {
+  display: block;
+  text-align: center;
+  margin-bottom: 35px;
+}
+header .main-navigation .menu-header-menu-container ul.menu li a {
+  color: var(--cl7);
+  text-decoration: none;
+  font-size: 25px;
+}
+header #menu-hamburger {
+  width: 40px;
+  z-index: 110;
+  height: 24px;
+  position: relative;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+header #menu-hamburger span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: var(--cl7);
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
+}
+header #menu-hamburger span:nth-child(1) {
+  top: 0px;
+}
+header #menu-hamburger span:nth-child(2),
+header #menu-hamburger span:nth-child(3) {
+  top: 12px;
+}
+header #menu-hamburger span:nth-child(4) {
+  top: 24px;
+}
+header #menu-hamburger.active span:nth-child(1) {
+  top: 12px;
+  width: 0%;
+  left: 50%;
+}
+header #menu-hamburger.active span:nth-child(2) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+header #menu-hamburger.active span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+header #menu-hamburger.active span:nth-child(4) {
+  top: 12px;
+  width: 0%;
+  left: 50%;
+}
+ul {
+  max-width: 900px;
+  width: 100%;
+  margin: 10px auto;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+main {
+  background-color: var(--bg-color-l1);
+  display: flex;
+  flex-direction: column;
+}
+footer {
+  margin: 20px 0;
+}
+/*# sourceMappingURL=style.css.map */
